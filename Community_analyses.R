@@ -11,7 +11,7 @@ library(usdm)
 
 # CKS monitoring dataset
 list.files()
-cav <- read.csv("Monitoring_data.csv", head=TRUE, sep=",", dec = ".")
+cav <- read.csv("Monitoring_data.csv", head=TRUE, sep=";", dec = ".")
 cav$Date <- mdy(cav$Date)
 cav<-as_tibble(cav)
 
@@ -199,7 +199,7 @@ caves <- as.data.frame(Cave_registers_pa %>%
                          colSums) 
 
 
-retirar <- c("Dytiscidae sp.1", "Glomeridesmus spelaeus", "Circoniscus sp.", "Chelodesmidae sp.",
+retirar <- c("Dytiscidae sp.1", "Glomeridesmus spelaeus", "Circoniscus carajasensis", "Chelodesmidae sp.",
              "Pseudonannolenidae sp.")
             
 
@@ -349,7 +349,7 @@ output_coefficients_f <- output_coefficients %>%
   mutate(term = case_when(term == "cav_DF3$B1000_Minning_pland" ~ "Mining cover",
                           term == "cav_DF3$tdm" ~ "Distance to mine",
                           TRUE ~ "Other")) %>%
-  filter(sp.name=="Charinus.ferreos" & term == "Mining cover"| sp.name=="Pyrgodesmidae.sp.1" & term == "Mining cover" |
+  filter(sp.name=="Charinus.ferreus" & term == "Mining cover"| sp.name=="Pyrgodesmidae.sp.1" & term == "Mining cover" |
            sp.name=="Escadabiidae.sp.1" & term == "Mining cover" | sp.name=="Sphendononema.guildingii"  & term == "Mining cover" |
            sp.name=="Stygnidae.sp.1" & term == "Mining cover" | sp.name=="Thecadactylus.rapicauda" & term == "Mining cover" |
            sp.name=="Pristimantis.fenestratus" & term == "Mining cover"| 
@@ -363,7 +363,7 @@ output_coefficients_f <- output_coefficients %>%
            sp.name=="Theraphosidae" & term == "Distance to mine" | sp.name=="Cydninae.sp.1"  & term == "Distance to mine" |
            sp.name=="Escadabiidae.sp.1" & term == "Distance to mine" | sp.name=="Escadabiidae.sp.2" & term == "Distance to mine" |
            sp.name=="Uvaroviella.sp." & term == "Distance to mine") %>%
-  mutate(sp.name = case_when(sp.name=="Charinus.ferreos" ~ "Charinus ferreus",
+  mutate(sp.name = case_when(sp.name=="Charinus.ferreus" ~ "Charinus ferreus",
                              sp.name=="Astieae.sp.1" ~ "Astieae sp.1",
                              sp.name=="Spirostreptida.sp." ~ "Spirostreptida sp.",
                              sp.name=="Escadabiidae.sp.1" ~ "Escadabiidae sp.1",

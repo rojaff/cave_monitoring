@@ -11,7 +11,7 @@ library(scales)
 
 #### Load and explore data ----
 list.files()
-cav <- read.csv("Monitoring_data.csv", head=TRUE, sep=",", dec = ".")
+cav <- read.csv("Monitoring_data.csv", head=TRUE, sep=";", dec = ".")
 cav$Date <- mdy(cav$Date)
 
 head(cav)
@@ -27,7 +27,22 @@ exclude <- c("aff Xyccarph sp.1", "Ochyrocera sp.1", "Pipa arrabali", "Scydmaenu
   "Carajas paraua", "Circoniscus buckupi", "Coarazuphium amazonicus", "Copelatus cessaima", 
   "Pseudonannolene sp.", "Turbellaria")
 
-## Nest data by cave
+## Exclude species and make cave area histogram
+cav_area <- cav %>% dplyr::select(Cave, Area, Species) %>% 
+  dplyr::filter(! Species %in% exclude) %>% group_by(Cave) %>%
+  summarise(Area = mean(Area))
+
+area.plot <- cav_area %>% ggplot(aes(Area)) + geom_histogram(bins=50) + 
+  geom_vline(xintercept=25, col="red") +
+  ylab("Number of caves") + xlab("Area (m²)") + theme_bw() + 
+  theme(
+    axis.title.x = element_text(size=15, face="bold"),
+    axis.title.y = element_text(size=15, face="bold"))
+
+area.plot
+ggsave("area.plot.png", plot = area.plot, device = "png", width = 6, height = 6, dpi = 300)
+
+## Exclude species and nest data by cave
 cav_nested <- cav %>% dplyr::select(Cave, Date, Season, Abundance, Species) %>% 
   dplyr::filter(! Species %in% exclude) %>%
   group_by(Cave) %>% nest()
